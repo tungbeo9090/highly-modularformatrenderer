@@ -1,6 +1,14 @@
-const fibonacciRecursive = (n) => {
-  if (n <= 1) {
-    return n;
-  }
-  return fibonacciRecursive(n - 1) + fibonacciRecursive(n - 2);
-};
+const senderSignature = aptos.transaction.sign({ signer: alice, transaction });
+
+// Sponsor signs
+const sponsorSignature = aptos.transaction.signAsFeePayer({
+  signer: sponsor,
+  transaction,
+});
+
+// Submit the transaction to chain
+const committedTxn = await aptos.transaction.submit.simple({
+  transaction,
+  senderAuthenticator: senderSignature,
+  feePayerAuthenticator: sponsorSignature,
+});
