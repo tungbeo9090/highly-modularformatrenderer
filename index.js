@@ -1,14 +1,8 @@
-const senderSignature = aptos.transaction.sign({ signer: alice, transaction });
-
-// Sponsor signs
-const sponsorSignature = aptos.transaction.signAsFeePayer({
-  signer: sponsor,
-  transaction,
-});
-
-// Submit the transaction to chain
-const committedTxn = await aptos.transaction.submit.simple({
-  transaction,
-  senderAuthenticator: senderSignature,
-  feePayerAuthenticator: sponsorSignature,
-});
+function minDepth(root) {
+  if (!root) return 0;
+  if (!root.left && !root.right) return 1;
+  let min = Infinity;
+  if (root.left) min = Math.min(min, minDepth(root.left));
+  if (root.right) min = Math.min(min, minDepth(root.right));
+  return min + 1;
+}
