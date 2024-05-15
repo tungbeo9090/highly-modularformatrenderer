@@ -1,16 +1,19 @@
-function combine(n, k) {
-  const result = [];
-  backtrack(1, []);
-  return result;
-  function backtrack(start, current) {
-    if (current.length === k) {
-      result.push([...current]);
-      return;
-    }
-    for (let i = start; i <= n; i++) {
-      current.push(i);
-      backtrack(i + 1, current);
-      current.pop();
+function getHint(secret, guess) {
+  let bulls = 0;
+  let cows = 0;
+  const map = new Map();
+  for (let i = 0; i < secret.length; i++) {
+    if (secret[i] === guess[i]) {
+      bulls++;
+    } else {
+      map.set(secret[i], (map.get(secret[i]) || 0) + 1);
     }
   }
+  for (let i = 0; i < guess.length; i++) {
+    if (secret[i] !== guess[i] && map.has(guess[i]) && map.get(guess[i]) > 0) {
+      cows++;
+      map.set(guess[i], map.get(guess[i]) - 1);
+    }
+  }
+  return `${bulls}A${cows}B`;
 }
